@@ -1,0 +1,124 @@
+<% include ./partials/header.ejs %>
+  <div class="profile w-full min-h-screen bg-zinc-900 pt-1">
+    <!-- making the form that will accept image -->
+    <form id="hiddenForm" hidden action="/fileUpload" method="post" enctype="multipart/form-data">
+      <input type="file" name="image" />
+    </form>
+    <div class="flex adjustNavBar">
+      <div class="logo">
+        <h3>Trendy</h3>
+      </div>
+      <div class="adjustNavBar">
+        <div class="listItems">
+          <form action="/chamber" method="get">
+            <button type="submit">
+              <h3>ChamberHub</h3>
+            </button>
+          </form>
+          <i class="fa-solid fa-door-open fa-lg" style="color: #ffffff;"></i>
+        </div>
+        <div class="feed">
+          <form action="/feed" method="get">
+            <button type="submit">Check Feed</button>
+          </form>
+        </div>
+        <div class="logout">
+          <form action="/logout" method="post">
+            <button type="submit">Logout</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="profDetails text-white flex flex-col items-center mt-10">
+      <div class="relative">
+        <span class="w-8 h-8 absolute bottom-0 right-0 rounded-full flex items-center justify-center bg-zinc-100">
+          <i id="upload" class="text-zinc-900 ri-pencil-fill"></i>
+        </span>
+        <div class="text-white w-32 h-32 bg-zinc-200 rounded-full overflow-hidden">
+          <img src="/images/uploads/<%= user.ProfileImage %>" class="w-full h-full object-cover" alt="" />
+        </div>
+      </div>
+
+      <h1 class="text-3xl font-semibold">
+        <%= user.username%>
+      </h1>
+      <h1 class="text-sm">@<%= user.username %>
+      </h1>
+      <div>
+        <button class="hover:bg-sky-700 px-7 py-2 rounded-lg bg-zinc-700 mt-9 mb-4">
+          <a href="/post">Add Post</a>
+        </button>
+      </div>
+    </div>
+    <h2 class="_mainHeading">ALL Your Masterpiece!</h2>
+    <div class="cards">
+      <form id="deleteForm" hidden action="/deletePost" method="post">
+        <input id="postToDelete" type="submit" name="postDetails" />
+      </form>
+      <div class="containerCards">
+        <% user.post.forEach(function(post){ %>
+          <div class="postCard mt-3 relative">
+            <div class="relative bg-zinc-400 w-52 h-40 rounded-md bg-cover">
+              <img class="w-full h-full object-cover overflow-hidden" src="/images/uploads/<%= post.image %>" alt="" />
+            </div>
+            <!-- making the form that will delete posts -->
+            <span
+              class="deleteIcon hidden absolute bottom-10 right-0 w-7 h-7 rounded-full flex items-center justify-center"
+              onclick="deletePost('<%= post._id %>')">
+              <i class="fa-solid fa-trash fa-rotate-by fa-sm" style="color: #ffffff; --fa-rotate-angle: 000000deg;"></i>
+            </span>
+            <h3 class=" postTitle mt-3">
+              <%= post.PostText %>
+            </h3>
+          </div>
+          <% }) %>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // for icons to be shown
+    const postcards = document.querySelectorAll('.postCard');
+    const deleteIcon = document.querySelectorAll('.deleteIcon');
+
+    postcards.forEach(function (element) {
+      const deleteIcon = element.querySelector(".deleteIcon");
+
+      element.addEventListener("mouseover", function () {
+        deleteIcon.style.display = "block";
+      });
+
+      element.addEventListener("mouseout", function () {
+        deleteIcon.style.display = "none";
+      });
+    });
+
+    // DELETE LOGIC
+    // to submit the delete post
+    deleteIcon.forEach(function (elem) {
+      elem.addEventListener('click', function () {
+        document.querySelector('#deleteForm [name="postDetails"]').click();
+      });
+    });
+    document.querySelector("#deleteForm [name='postDetails']").addEventListener("change", function () {
+      document.querySelector("#deleteForm").submit();
+    });
+
+    // Add a JavaScript Function to Set the Post ID
+    function deletePost(postId) {
+      document.querySelector('#postToDelete').value = postId;
+      document.querySelector('#deleteForm').submit();
+    }
+
+
+
+    // activate the hidden form
+    document.querySelector("#upload").addEventListener("click", () => {
+      document.querySelector("#hiddenForm input").click();
+    });
+    // change the state of the form
+    document.querySelector("#hiddenForm input").addEventListener("change", function () {
+      document.querySelector("#hiddenForm").submit();
+    });
+  </script>
+  <% include ./partials/footer.ejs %>

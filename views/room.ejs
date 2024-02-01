@@ -1,0 +1,259 @@
+<% include ./partials/header.ejs %>
+    <div class="bg-zinc-800 h-full">
+        <div class="w-full  pt-1">
+            <div class="sectionOne bg-zinc-900 flex">
+                <div class="Logo">
+                    <h3>Trendy</h3>
+                    <i id="slideMenu" class="fa-solid fa-caret-down fa-rotate-270 fa-xl" style="color: #ffffff;"></i>
+                </div>
+                <div class="sectionTwo">
+                    <div class="icon">
+                        <i class="fa-regular fa-bell fa-xl" style="color: #ffffff;"></i>
+                    </div>
+                    <!-- profile dropdown -->
+                    <div class="imgLogo">
+                        <img id="iconImage" src="/images/uploads/<%= user.ProfileImage %>">
+                        <div class="dropdown" id="dropdownContent">
+                            <div class="imglogo">
+                                <img src="/images/uploads/<%= user.ProfileImage %>">
+                                <h3>
+                                    <%= user.username %>
+                                </h3>
+                            </div>
+                            <hr>
+                            <div class="options">
+                                <form action="/profile" method="get">
+                                    <button type="submit">
+                                        Profile
+                                    </button>
+                                </form>
+                                <form action="/feed" method="get">
+                                    <button type="submit">
+                                        Feed
+                                    </button>
+                                </form>
+                                <form action="/room" method="get">
+                                    <button type="submit">
+                                        Rooms
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="logoutRoom">
+                                <form action="/logout" method="post">
+                                    <button type="submit">
+                                        Logout
+                                        <i class="fa-solid fa-arrow-right-from-bracket fa-lg"
+                                            style="color: #ffffff;"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- slide Menu -->
+                <div class="slideMenu">
+                    <div class="slideIcons">
+                        <div>
+                            <form action="/chamber" method="get">
+                                <button>
+                                    <i class="ri-home-2-line ri-2x"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <div>
+                            <form action="/profile" method="get">
+                                <button>
+                                    <i class="fa-regular fa-user fa-2xl" style="color: #000000;"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <div>
+                            <form action="/feed" method="get">
+                                <button>
+                                    <i class="fa-regular fa-comment fa-2xl" style="color: #000000;"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <div>
+                            <form action="/room" method="get">
+                                <button>
+                                    <i class="ri-door-open-line ri-2x"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <div>
+                            <form action="/logout" method="post">
+                                <button>
+                                    <i class="ri-logout-box-r-line ri-2x"></i>
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- for the group background image -->
+            <div class="wrapper">
+                <div class="sectionThree">
+                    <div class="navGorup">
+                        <div class="internalHeadings">
+                            <h3>
+                                <%= room.roomname %>
+                            </h3>
+                            <form action="/chat" method="get">
+                                <button type="submit">
+                                    <h3>Whisper Hub</h3>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="postNavSection">
+                        <button id="popUpRoom">Add Post</button>
+                    </div>
+                    <!-- for post in a room -->
+                    <div id="popUpRoomPosts" class="popUpMenuForPost">
+                        <div class="roomHeadingAndXmark">
+                            <div class="heading">
+                                <h1 class="_mainHeading1">Create your Post</h1>
+                            </div>
+                            <div id="closeIconPop" class="closeIcon">
+                                <i class="fa-solid fa-xmark fa-2xl" style="color: #000000;"></i>
+                            </div>
+                        </div>
+                        <form action="/roomPostUpload" method="post">
+                            <!-- Add the hidden input for roomID -->
+                            <div class="mainContainer">
+                                <div class="firstContainer">
+                                    <input type="hidden" name="roomId" value="<%= room._id %>">
+                                    <input autocomplete="off" name="fileCaption" type="text"
+                                        placeholder="Enter Some Caption" />
+                                </div>
+                                <div class="secondContainer">
+                                    <div class="thirdContainer">
+                                        <div class="submit submit2">
+                                            <input type="submit" value="Submit Post">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- for post Display Area -->
+                    <div class="postAndCommentsSection">
+                        <!-- postArea -->
+                        <div class="postArea">
+                            <div class="postContainer ">
+                                <% room.posts.forEach(function(post, index) { %>
+                                    <div class="postUser">
+                                        <div class="first">
+                                            <img id="iconImage" src="/images/uploads/<%= post.user.ProfileImage %>">
+                                        </div>
+                                        <div class="second">
+                                            <h3>
+                                                <%= post.user.username %>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="postContent">
+                                        <div class="postText">
+                                            <h2>
+                                                <%= post.PostText %><br>
+                                            </h2>
+                                        </div>
+                                        <div class="postIcons">
+                                            <i class="ri-thumb-up-fill ri-xl" style="color: white;"></i>
+                                            <i class="commentBtn ri-chat-1-fill ri-xl" style="color: white;"></i>
+                                            <div class="commentSection">
+                                                <input type="hidden" name="postId" value="<%= post._id %>">
+                                                <input name="commentText" type="text" autocomplete="off"
+                                                    placeholder="Your Thoughts Here">
+                                                <button>
+                                                    <i class="ri-send-plane-2-fill ri-xl"
+                                                        style="color: rgb(228, 167, 11);"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }) %>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // All the Variables
+        const openContacts = document.getElementById("groupIcon");
+        const membersImages = document.querySelectorAll(".imageBox");
+        const commentBtn = document.querySelectorAll(".commentBtn");
+        const commentInput = document.querySelectorAll(".commentSection");
+        const AddPostButoon = document.getElementById("popUpRoom");
+        const xMark = document.getElementById("closeIconPop");
+        const popUpRommPost = document.querySelector("#popUpRoomPosts");
+        const dropdownNav = document.getElementById("dropdownContent");
+        const image = document.getElementById("iconImage");
+        const slideIcon = document.querySelector("#slideMenu");
+        const hiddenCommnetBox = document.querySelector("#hiddenCommnetBox");
+        const hiddenIcon = document.querySelector("#hiddenCommnetIcon");
+        const slideMenu = document.querySelector('.slideMenu');
+        let flag = 0;
+        let flag1 = 0;
+        let flag2 = 0;
+        // for dorpdown
+        image.addEventListener("click", function () {
+            if (dropdownNav.style.display === "none" || dropdownNav.style.display === "") {
+                dropdownNav.style.display = "block";
+                flag = 1;
+            } else if (dropdownNav.style.display === "block") {
+                dropdownNav.style.display = "none";
+                flag = 0;
+            }
+        });
+        // for slide menu
+        slideIcon.addEventListener("click", function () {
+            if (flag1 === 0) {
+                slideMenu.style.display = "block";
+                slideMenu.style.transition = "transform 1.5s";
+                slideMenu.style.transform = "translateX(0)";
+                flag1 = 1;
+            } else {
+                slideMenu.style.transition = "transform 1.5s";
+                slideMenu.style.transform = "translateX(-100%)";
+                flag1 = 0;
+            }
+        });
+        // for popUp Room post
+        AddPostButoon.addEventListener("click", function () {
+            popUpRommPost.style.display = "block";
+        });
+        xMark.addEventListener("click", function () {
+            popUpRommPost.style.display = "none";
+        });
+        // for comments Input
+        commentBtn.forEach(function (button, index) {
+            button.addEventListener("click", function () {
+                let commentSection = commentInput[index];
+                commentSection.style.display = (commentSection.style.display === "none" || !commentSection.style.display) ? "block" : "none";
+            })
+        })
+        // for Group Members to be shown and hide
+        openContacts.addEventListener('click', function () {
+            if (flag2 === 0) {
+                membersImages.forEach(function (image) {
+                    // image.style.display = 'block';
+                    image.classList.add("show");
+                })
+                flag2 = 1;
+            } else {
+                membersImages.forEach(function (image) {
+                    // image.style.display = 'none';
+                    image.classList.remove("show");
+                })
+                flag2 = 0;
+            }
+        })
+    </script>
+    <% include ./partials/footer.ejs %>

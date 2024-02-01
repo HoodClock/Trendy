@@ -1,0 +1,228 @@
+<% include ./partials/header.ejs %>
+    <div class="profile w-full min-h-screen  pt-1">
+        <!-- navbar -->
+        <div class="navBar flex items-center">
+            <div class="logo">
+                <h3>Trendy</h3>
+            </div>
+            <div class="listItems_chamber flex items-center">
+                <div class="feed">
+                    <form action="/feed" method="get">
+                        <button type="submit">Feed</button>
+                    </form>
+                </div>
+                <div class="feed">
+                    <form action="/profile" method="get">
+                        <button type="submit">Profile</button>
+                    </form>
+                </div>
+                <div class="feed">
+                    <button>
+                        <h3>Home</h3>
+                    </button>
+                </div>
+            </div>
+            <div class="listSection3 flex items-center">
+                <div class="search">
+                    <input type="text" placeholder="Search Rooms">
+                </div>
+                <div class="imgLogo">
+                    <img id="iconImage" src="/images/uploads/<%= user.ProfileImage %>" alt="">
+                    <div class="dropdown" id="dropdownContent">
+                        <div class="imglogo">
+                            <img id="iconImage" src="/images/uploads/<%= user.ProfileImage %>" alt="">
+
+                            <h3>
+                                <%= user.username %>
+                            </h3>
+                        </div>
+                        <div class="options">
+                            <form action="/profile" method="get">
+                                <button type="submit">
+                                    Profile
+                                </button>
+                            </form>
+                            <form action="/feed" method="get">
+                                <button type="submit">
+                                    Feed
+                                </button>
+                            </form>
+                            <form action="/room" method="get">
+                                <button type="submit">
+                                    Rooms
+                                </button>
+                            </form>
+                        </div>
+                        <hr>
+                        <div class="logout">
+                            <form action="/logout" method="post">
+                                <button type="submit">
+                                    Logout
+                                    <i class="fa-solid fa-arrow-right-from-bracket fa-lg" style="color: #ffffff;"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- main Heading -->
+        <div class="RoomPageHeading">
+            <div class="staticHeading">
+                <h3>Transform Your</h3>
+            </div>
+            <div class="varyContent">
+                <ul>
+                    <li><span>Space</span></li>
+                    <!-- <li><span>Time</span></li>
+                    <li><span>Room</span></li>
+                    <li><span>Game</span></li> -->
+                </ul>
+            </div>
+        </div>
+        <!-- Main Content -->
+        <div class="MainContent">
+            <div class="horizantleOptions">
+                <div class="firstBox">
+                    <div class="horizontle">
+                        <h3 class="h1">Catagories
+                            <i class="fa-regular fa-folder-open fa-lg" style="color: #f41b1b;"></i>
+                        </h3>
+                    </div>
+                    <!-- Catagories Container -->
+                    <div class="catagoriesContainer">
+                        <!-- Categories in grid -->
+                        <h3>Tech
+                            <i class="fa-solid fa-desktop fa-lg" style="color: #ffffff;"></i>
+                        </h3>
+                        <h3>Books
+                            <i class="fa-solid fa-book-open fa-lg" style="color: #ffffff;"></i>
+                        </h3>
+                        <h3>Fitness
+                            <i class="fa-solid fa-dumbbell fa-lg" style="color: #ffffff;"></i>
+                        </h3>
+                        <h3>Music
+                            <i class="fa-solid fa-music fa-lg" style="color: #f7f7f7;"></i>
+                        </h3>
+                        <h3>Travel
+                            <i class="fa-solid fa-plane fa-lg"></i>
+                        </h3>
+                        <h3>Cooking
+                            <i class="fa-solid fa-utensils fa-lg"></i>
+                        </h3>
+                        <h3>Gaming
+                            <i class="fa-solid fa-gamepad fa-lg"></i>
+                        </h3>
+                        <h3>Art
+                            <i class="fa-solid fa-brush fa-lg"></i>
+                        </h3>
+                        <h3>Photography
+                            <i class="fa-solid fa-camera fa-lg"></i>
+                        </h3>
+                    </div>
+                </div>
+                <div class="firstBox">
+                    <div class="horizontle">
+                        <h3 class="h2">List of Rooms
+                            <i class="fa-solid fa-rectangle-list fa-lg" style="color: #aaf901;"></i>
+                        </h3>
+                    </div>
+                    <!-- Catagories Container -->
+                    <div class="listRooms">
+                        <ul>
+                            <% allRooms.forEach((room)=> { %>
+                                <li>
+                                    <h3>
+                                        <!-- Link to the room page with the room ID as a parameter -->
+                                        <a href="/room/<%= room._id %>">
+                                            <%= room.roomname %>
+                                        </a>
+                                    </h3>
+                                    <!-- Join Room button -->
+                                    <form action="/roomJoin" method="post">
+                                        <!-- Add a hidden input field for the roomId -->
+                                        <input type="hidden" name="roomId" value="<%= room._id %>">
+                                        <button type="submit" class="roomButton">
+                                            <i class="bluIcon fa-solid fa-plus fa-lg" style="color: #2298e2;"></i>
+                                        </button>
+                                    </form>
+                                </li>
+                                <% }); %>
+                        </ul>
+                    </div>
+                </div>
+                <div class="firstBox">
+                    <div class="horizontle">
+                        <h3 class="h4 greenIcon">Make Room
+                            <i class="greenIcon fa-solid fa-door-open fa-lg" style="color: #33d60a;"></i>
+                        </h3>
+                    </div>
+                    <!-- popup menu for making a room -->
+                    <div class="RoomMakeUp">
+                        <div class="maintitle">
+                            <div class="heading">
+                                <h5>Level up Your Game</h5>
+                                <h3>Create Your Chamber</h3>
+                            </div>
+                            <div class="icon">
+                                <i id="closeIconPop" class="fa-solid fa-xmark fa-2xl" style="color: #ffffff;"></i>
+                            </div>
+                        </div>
+                        <form id="roomForm" action="/createRoom" method="post">
+                            <div class="formFields">
+                                <div class="inputsFields">
+                                    <h3>Room Name</h3>
+                                    <input autocomplete="off" name="roomname" class="input" type="text">
+                                    <h3>Purpose of Room</h3>
+                                    <textarea name="roompurpose" autocomplete="off" cols="50" rows="3"></textarea>
+                                    <h3>Add Tags (comma-separated)</h3>
+                                    <input id="tagsInput" name="roomtags" autocomplete="off" type="text">
+                                </div>
+                            </div>
+                            <div class="buttonMake">
+                                <button type="submit">Make it Happen</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const dropdownNav = document.getElementById("dropdownContent");
+        const image = document.getElementById("iconImage");
+        const xMark = document.getElementById("closeIconPop");
+        const makeRoom = document.querySelector(".greenIcon");
+        const popUp = document.querySelector(".RoomMakeUp");
+        let flag = 0;
+        // for dorpdown
+        image.addEventListener("click", function () {
+            if (dropdownNav.style.display === "none" || dropdownNav.style.display === "") {
+                dropdownNav.style.display = "block";
+                flag = 1;
+            } else if (dropdownNav.style.display === "block") {
+                dropdownNav.style.display = "none";
+                flag = 0;
+            }
+        });
+        // for popUP
+        makeRoom.addEventListener("click", () => {
+            popUp.style.display = "block";
+            setTimeout(() => {
+                popUp.style.opacity = "1";
+                popUp.style.transition = "opacity 1.5s";
+            }, 10)
+        })
+        xMark.addEventListener("click", () => {
+            popUp.style.display = "none";
+            setTimeout(() => {
+                popUp.style.display = "none";
+            }, 1500);
+        })
+        // for the form submission of Making room
+        function submitForm() {
+            // Trigger the form submission
+            document.getElementById('roomForm').submit();
+        }
+    </script>
+    <% include ./partials/footer.ejs %>

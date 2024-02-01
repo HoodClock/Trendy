@@ -1,0 +1,24 @@
+<% include ./partials/header.ejs %>
+  <div class="w-full h-screen bg-zinc-800 pt-40">
+    <h1 class="_mainHeading">Create your Post</h1>
+    <form action="/postUpload" method="post" enctype="multipart/form-data">
+      <div class="mainConatiner">
+        <div class="firstContainer">
+          <h2>Share Your Story!</h2>
+          <input name="fileCaption" type="text" placeholder="Enter Some Caption" />
+        </div>
+        <div class="secondContainer">
+          <div class="thirdContainer">
+            <label for="fileInput" class="customButton">Upload
+              <i class="ri-upload-cloud-2-line"></i>
+            </label>
+            <input name="postImage" type="file" id="fileInput" class="hiddenInput" />
+            <div  class="submit">
+              <input type="submit" value="Submit Post">
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <% include ./partials/footer.ejs %>

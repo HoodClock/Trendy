@@ -1,0 +1,62 @@
+<% include ./partials/header.ejs %>
+    <div class=" profile mainFeedPage w-full min-h-screen bg-zinc-800">
+        <!-- NavBar -->
+        <div class="navbar">
+            <div class="logo">
+                <h3>Trendy</h3>
+            </div>
+            <div class="buttons">
+                <form class="feed" action="/profile" method="get">
+                    <button type="submit">Profile</button>
+                </form>
+                <form class="logout" action="/logout" method="post">
+                    <button type="submit">Log Out</button>
+                </form>
+            </div>
+        </div>
+        <!-- mainHeading -->
+        <div class="mainHeading">
+            <h3>Latest Updates :</h3>
+        </div>
+        <!-- Hero-Section -->
+        <div class="heroSection">
+            <!-- postcards example -->
+            <% allUserData.forEach(function(user) { %>
+                <% user.post.forEach(function(post){ %>
+                    <div class="postCards">
+                        <!-- profile pic of user -->
+                        <div class="imgLogo">
+                            <img src="/images/uploads/<%= user.ProfileImage %>" alt="">
+                        </div>
+                        <div class="postHeadings">
+                            <h3>
+                                <%= post.PostText %>
+                            </h3>
+                        </div>
+                        <div class="postImage">
+                            <img src="/images/uploads/<%= post.image %>" alt="">
+                        </div>
+                        <div class="iconsContainer">
+                            <form action="/LikedPost" method="post">
+                                <input type="hidden" name="postID" value="<%= post._id %>">
+                                <button type="submit" class="like-button">
+                                    <i id="likeIcon" class="fa-regular fa-thumbs-up fa-2xl" style="color: #e9e9e9"></i>
+                                    <!-- Display the count of likes -->
+                                    <span class="likes">
+                                        <%= post.Likes %>
+                                    </span>
+                                </button>
+                            </form>
+                            </form>
+                            <i class="fa-solid fa-box-archive fa-xl" style="color: #ffffff;"></i>
+                        </div>
+                    </div>
+                    <% }); %>
+                        <% }); %>
+        </div>
+    </div>
+    <script>
+        // script for feed page
+
+    </script>
+    <% include ./partials/footer.ejs %>
